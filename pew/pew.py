@@ -139,11 +139,13 @@ def inve(env, command, *args, **kwargs):
 
         unsetenv('PYTHONHOME')
         unsetenv('__PYVENV_LAUNCHER__')
-
-        try:
-            return check_call([command] + list(args), shell=windows, **kwargs)
+        if kwargs.get("shell") is None:
+            kwargs["shell"] = windows
             # need to have shell=True on windows, otherwise the PYTHONPATH
             # won't inherit the PATH
+
+        try:
+            return check_call([command] + list(args), **kwargs)
         except OSError as e:
             if e.errno == 2:
                 err('Unable to find', command)
