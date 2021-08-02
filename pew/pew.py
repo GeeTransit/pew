@@ -673,6 +673,16 @@ def in_cmd(argv):
     return inve(*argv)
 
 
+def inraw_cmd(argv):
+    """Run a command in the given virtualenv with shell=False always."""
+
+    parse_envname(argv, lambda : sys.exit('You must provide a valid virtualenv to target'))
+
+    # Useful if PYTHONPATH is not used.
+    # Also allows passing arguments with special characters.
+    return inve(*argv, shell=False)
+
+
 def restore_cmd(argv):
     """Try to restore a broken virtualenv by reinstalling the same python version on top of it"""
 
